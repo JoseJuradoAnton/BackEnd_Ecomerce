@@ -64,18 +64,15 @@ app.post("/signup", async (req, res) => {
 
     const userSave = await newUser.save();
     const token = jwt.sign({ _id: userSave._id }, "secret");
-    // res.cookie("token", token);
+    res.cookie("token", token);
 
     res.json({
       id: userSave._id,
       firstName: userSave.firstName,
       lastName: userSave.lastName,
       email: userSave.email,
-      token,
       message: "Successfully Sig Up",
     });
-    // res.send({ });
-    // res.cookie(token);
   } catch (error) {
     res.json({ message: error.message });
   }
