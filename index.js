@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 8080;
 
 //mongodb connectionm
-console.log(process.env.MONGODB_URL);
+// console.log(process.env.MONGODB_URL);
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => console.log("Connect to DataBase!!"))
@@ -72,10 +72,12 @@ app.post("/signup", async (req, res) => {
       lastName: userSave.lastName,
       email: userSave.email,
       token,
+      message: "Successfully Sig Up",
     });
+    // res.send({ });
     // res.cookie(token);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.json({ message: error.message });
   }
 });
 
