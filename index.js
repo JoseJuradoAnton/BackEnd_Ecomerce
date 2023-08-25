@@ -6,7 +6,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
-const generateAccessToken = require("./libs/jwt");
 
 const app = express();
 app.use(morgan("dev"));
@@ -18,8 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 8080;
 
-//mongodb connectionm
-// console.log(process.env.MONGODB_URL);
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => console.log("Connect to DataBase!!"))
@@ -79,8 +76,32 @@ app.post("/signup", async (req, res) => {
 });
 
 //API LOGIN
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   console.log(req.body);
+  const { email, password } = req.body;
+  try {
+    const checkEmail = await userModel.findOne({ email: email });
+    // res.json(checkEmail.password);
+    if (!checkEmail) {
+      res.json("user and password Wrong !!!");
+    }
+
+    const checkpassword = bcrypt.compareSync(password, checkEmail.password);
+
+    if (checkpassword) {
+      res.json("Login is Successfully");
+      res.status(201).json({
+        status: "Login is Successfully",
+      });
+    } else {
+      res.status(401).json({
+        status: "Wrong user or password",
+        message: "error",
+      });
+    }
+  } catch (error) {
+    res.status({ message: "error de sistema" });
+  }
 });
 
 app.listen(PORT, () => console.log("Server is running at port :" + PORT));
