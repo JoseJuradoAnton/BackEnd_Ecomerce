@@ -10,7 +10,7 @@ const dotenv = require("dotenv").config();
 const app = express();
 app.use(morgan("dev"));
 app.use(cors());
-// app.use(bodyParser.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(express());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -89,9 +89,14 @@ app.post("/login", async (req, res) => {
     const checkpassword = bcrypt.compareSync(password, checkEmail.password);
 
     if (checkpassword) {
-      res.json("Login is Successfully");
-      res.status(201).json({
+      const dataSend = {
+        userEmail: checkEmail.email,
+        firstName: checkEmail.firstName,
+        lastName: checkEmail.lastName,
+      };
+      res.status(200).json({
         status: "Login is Successfully",
+        data: dataSend,
       });
     } else {
       res.status(401).json({
@@ -104,4 +109,31 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// Production Section
+const schemaProduct = mongoose.Schema({
+  name: String,
+  category: String,
+  image: String,
+  price: String,
+  description: String,
+});
+
+const productModel = mongoose.model("product", schemaProduct);
+
+// Save product in data
+// API
+app.post("/uploadProduct", async (req, res) => {
+  console.log(req.body);
+  const data = await productModel(req.body);
+  const dataSave = await data.save();
+  console.log(dataSave);
+  res.send({ message: "upload successfully" });
+});
+
+app.get("/product", async (req, res) => {
+  const data = await productModel.find({});
+  res.send(data);
+});
+
+//server is Running
 app.listen(PORT, () => console.log("Server is running at port :" + PORT));
