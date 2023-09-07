@@ -18,7 +18,7 @@ app.use(express.urlencoded());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true}));
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 443;
 
 mongoose
   .connect(process.env.MONGODB_URL)
