@@ -17,29 +17,29 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 const PORT = process.env.PORT || 8080;
 
-mongoose
-  .connect(process.env.MONGODB_URL)
-  .then(() => console.log("Connect to DataBase!!"))
-  .catch((err) => console.log(err));
+// mongoose
+//   .connect(process.env.MONGODB_URL)
+//   .then(() => console.log("Connect to DataBase!!"))
+//   .catch((err) => console.log(err));
 
-//Schema base de datos
-const userSchema = new mongoose.Schema(
-  {
-    firstName: String,
-    lastName: String,
-    email: {
-      type: String,
-      unique: true,
-    },
-    password: String,
-  },
-  {
-    timestamps: true,
-  }
-);
+// //Schema base de datos
+// const userSchema = new mongoose.Schema(
+//   {
+//     firstName: String,
+//     lastName: String,
+//     email: {
+//       type: String,
+//       unique: true,
+//     },
+//     password: String,
+//   },
+//   {
+//     timestamps: true,
+//   }
+// );
 
-//
-const userModel = mongoose.model("user", userSchema);
+// //
+// const userModel = mongoose.model("user", userSchema);
 
 //API
 app.get("/", (req, res) => {
