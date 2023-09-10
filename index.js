@@ -18,7 +18,7 @@ app.use(express.urlencoded());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true}));
 
-const PORT = process.env.PORT || 443;
+const PORT = process.env.PORT || 3000;
 
 mongoose
   .connect(process.env.MONGODB_URL)
@@ -46,7 +46,7 @@ const userModel = mongoose.model("user", userSchema);
 
 //API
 app.get("/", (req, res) => {
-  res.json.parse("Server is running..");
+  res.send(`Server is running on Port ${PORT}`);
 });
 //Sign up
 app.post("/signup", async (req, res) => {
