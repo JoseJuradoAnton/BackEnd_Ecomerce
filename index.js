@@ -12,16 +12,20 @@ app.use(express());
 app.use(morgan("dev"));
 app.use(cors());
 
-app.use(express.json({limit: "50mb"}));
-app.use(express.urlencoded());
+// app.use(express.json({limit: "50mb"}));
+// app.use(express.urlencoded());
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true}));
 
 const PORT = process.env.PORT || 3000;
 
+const MongoURL =
+  "mongodb+srv://test_admin:admin@cluster0.mitpxkz.mongodb.net/adminEcomerce?retryWrites=true&w=majority";
+
 mongoose
-  .connect(process.env.MONGODB_URL)
+  // .connect(process.env.MONGODB_URL)
+  .connect(MongoURL)
   .then(() => console.log("Connect to DataBase!!"))
   .catch((err) => console.log(err));
 
