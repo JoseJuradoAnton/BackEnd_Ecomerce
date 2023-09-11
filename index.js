@@ -20,12 +20,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 const PORT = process.env.PORT || 3000;
 
-const MongoURL =
-  "mongodb+srv://test_admin:admin@cluster0.mitpxkz.mongodb.net/adminEcomerce?retryWrites=true&w=majority";
-
 mongoose
-  // .connect(process.env.MONGODB_URL)
-  .connect(MongoURL)
+  .connect(process.env.MONGODB_URL)
   .then(() => console.log("Connect to DataBase!!"))
   .catch((err) => console.log(err));
 
