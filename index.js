@@ -12,11 +12,11 @@ app.use(express());
 app.use(morgan("dev"));
 app.use(cors());
 
-// app.use(express.json({limit: "50mb"}));
-// app.use(express.urlencoded());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded());
 
 app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
 
@@ -50,7 +50,7 @@ app.get("/", (req, res) => {
 });
 //Sign up
 app.post("/signup", async (req, res) => {
-  const {firstName, lastName, email, password} = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -63,7 +63,7 @@ app.post("/signup", async (req, res) => {
     });
 
     const userSave = await newUser.save();
-    const token = jwt.sign({_id: userSave._id}, "secret");
+    const token = jwt.sign({ _id: userSave._id }, "secret");
     res.cookie("token", token);
 
     res.json({
@@ -74,16 +74,16 @@ app.post("/signup", async (req, res) => {
       message: "Successfully Sig Up",
     });
   } catch (error) {
-    res.json({message: error.message});
+    res.json({ message: error.message });
   }
 });
 
 //API LOGIN
 app.post("/login", async (req, res) => {
   console.log(req.body);
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   try {
-    const checkEmail = await userModel.findOne({email: email});
+    const checkEmail = await userModel.findOne({ email: email });
     // res.json(checkEmail.password);
     if (!checkEmail) {
       res.json("user and password Wrong !!!");
@@ -108,7 +108,7 @@ app.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
-    res.status({message: "error de sistema"});
+    res.status({ message: "error de sistema" });
   }
 });
 
@@ -130,7 +130,7 @@ app.post("/uploadProduct", async (req, res) => {
   const data = await productModel(req.body);
   const dataSave = await data.save();
   console.log(dataSave);
-  res.send({message: "upload successfully"});
+  res.send({ message: "upload successfully" });
 });
 
 app.get("/product", async (req, res) => {
